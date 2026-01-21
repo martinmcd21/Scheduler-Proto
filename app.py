@@ -15,11 +15,19 @@ from PIL import Image
 import streamlit as st
 
 # --- Optional OpenAI (kept for PDF parsing flow) ---
+# --- OpenAI setup ---
+OpenAI = None
+openai_legacy = None
+
 try:
+    # New OpenAI SDK (v1+)
     from openai import OpenAI
 except Exception:
-    OpenAI = None  # type: ignore
-
+    try:
+        # Legacy SDK fallback (0.x)
+        import openai as openai_legacy
+    except Exception:
+        openai_legacy = None
 from graph_client import GraphClient, GraphConfig, GraphAPIError, GraphAuthError
 from audit_log import AuditLog, LogLevel, log_structured, InterviewStatus
 from ics_utils import ICSInvite, stable_uid, ICSValidationError, create_ics_from_interview, generate_cancellation_ics
