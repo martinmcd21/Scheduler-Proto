@@ -479,10 +479,10 @@ def parse_slots_from_image(image: Image.Image) -> List[Dict[str, str]]:
             ],
         )
         content = resp.choices[0].message.content.strip() if resp.choices else ""
-       content = (resp.choices[0].message.content or "").strip()        if content.startswith("```"):
-            content = content.strip("`")
-            if "\n" in content:
-                content = content.split("\n", 1)[1].strip()
+content = (resp.choices[0].message.content or "").strip()
+
+if content.startswith("```"):
+    content = content.strip("`")
 
         slots = json.loads(content) if content else []
         valid_slots = []
@@ -702,11 +702,10 @@ TEXT TO PARSE:
         )
         content = resp.choices[0].message.content.strip() if resp.choices else ""
 
-      content = (resp.choices[0].message.content or "").strip()        if content.startswith("```"):
-            content = content.strip("`")
-            if "\n" in content:
-                content = content.split("\n", 1)[1].strip()
+content = (resp.choices[0].message.content or "").strip()
 
+if content.startswith("```"):
+    content = content.strip("`")
         slots = json.loads(content) if content else []
         valid_slots = []
         for s in slots:
