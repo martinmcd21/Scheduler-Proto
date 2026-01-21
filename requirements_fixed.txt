@@ -1,0 +1,8 @@
+streamlit
+openai>=1.0.0
+PyMuPDF
+Pillow
+pytz
+requests
+tzdata
+python-docx
