@@ -1,5 +1,5 @@
 streamlit
-openai>=1.30.0
+openai>=1.0.0
 PyMuPDF
 Pillow
 pytz
