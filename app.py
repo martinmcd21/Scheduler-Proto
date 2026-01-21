@@ -411,20 +411,22 @@ def graph_enabled() -> bool:
     return get_graph_config() is not None
 
 
-def get_openai_client() -> Optional[Any]:
-    """
-    Create an OpenAI client using Streamlit secrets or environment variable.
-    Keeps backward compatibility with older secret key names.
-    """
+def get_openai_client():
     api_key = get_secret("openai_api_key") or get_secret("OPENAI_API_KEY")
-    if not api_key:
-        st.warning("OpenAI API key not found. PDF availability parsing will be limited.")
-        return None
-    if OpenAI is None:
-        st.warning("OpenAI SDK not available (openai). PDF availability parsing will be limited.")
-        return None
-    return OpenAI(api_key=api_key)
 
+    if not api_key:
+        st.warning("OpenAI API key not found. Calendar parsing disabled.")
+        return None
+
+    if OpenAI is not None:
+        return OpenAI(api_key=api_key)
+
+    if openai_legacy is not None:
+        openai_legacy.api_key = api_key
+        return openai_legacy
+
+    st.warning("OpenAI SDK not available. Calendar parsing disabled.")
+    return None
 
 # ----------------------------
 # PDF / image parsing helpers (existing behavior)
