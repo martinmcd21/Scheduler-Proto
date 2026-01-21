@@ -39,8 +39,22 @@ from export_utils import (
     filter_interviews_for_export,
     filter_audit_entries,
     AUDIT_ACTION_DESCRIPTIONS,
-)
+def get_openai_client():
+    api_key = get_secret("openai_api_key") or get_secret("OPENAI_API_KEY")
 
+    if not api_key:
+        st.warning("OpenAI API key not found. Calendar parsing disabled.")
+        return None
+
+    if OpenAI is not None:
+        return OpenAI(api_key=api_key)
+
+    if openai_legacy is not None:
+        openai_legacy.api_key = api_key
+        return openai_legacy
+
+    st.warning("OpenAI SDK not available. Calendar parsing disabled.")
+    return None
 
 # ----------------------------
 # Input Validation
